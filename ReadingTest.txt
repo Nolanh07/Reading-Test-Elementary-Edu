@@ -1,0 +1,7 @@
+This is a test to assist elementary school teachers in assessing the 
+skills of early elementary school kids. The test employs a login feature
+so teachers can establish their classroom, store the test results and 
+easily access them. The back end code was written using JavaScript and the 
+user interferface was created using HTML and CSS. The test gives the kids 
+several different words in groups pre determined by the teachers to test 
+different criteria such as .....  

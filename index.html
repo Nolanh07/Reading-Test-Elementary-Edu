@@ -1,0 +1,114 @@
+<link rel="stylesheet" href="style.css">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Letter Tracking Test</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="home-screen">
+        <h1>Welcome to the Letter Tracking Test</h1>
+        <button onclick="showStudentLogin()">Students</button>
+        <button onclick="showTeacherOptions()">Teachers</button>
+    </div>
+
+    <!-- Student Login Section -->
+    <div id="student-login-section" class="hidden">
+        <h2>Student Login</h2>
+        <input type="text" id="student-username" placeholder="Username"><br>
+        <input type="password" id="student-password" placeholder="Password"><br>
+        <input type="text" id="classroom-code" placeholder="Classroom Code"><br>
+        <button onclick="submitStudentLogin()">Login</button>
+        <button onclick="goBack()">Back</button>
+    </div>
+
+    <!-- Teacher Options Section -->
+    <div id="teacher-options-section" class="hidden">
+        <h2>Teacher Options</h2>
+        <button onclick="showTeacherSignUp()">Sign Up</button>
+        <button onclick="showTeacherLogin()">Login</button>
+        <button onclick="goBack()">Back</button>
+    </div>
+
+    <!-- Teacher Sign Up Section -->
+    <div id="teacher-signup-section" class="hidden">
+        <h2>Teacher Sign Up</h2>
+        <input type="text" id="teacher-username" placeholder="Username"><br>
+        <input type="password" id="teacher-password" placeholder="Password"><br>
+        <input type="text" id="school-name" placeholder="School Name"><br>
+        <input type="text" id="school-district" placeholder="School District"><br>
+        <button onclick="submitTeacherSignUp()">Sign Up</button>
+        <button onclick="goBack()">Back</button>
+    </div>
+
+    
+    <!-- Teacher Login Section -->
+    <div id="teacher-login-section" class="hidden">
+        <h2>Teacher Login</h2>
+        <input type="text" id="teacher-login-username" placeholder="Username"><br>
+        <input type="password" id="teacher-login-password" placeholder="Password"><br>
+        <button onclick="submitTeacherLogin()">Login</button>
+        <button onclick="goBack()">Back</button>
+    </div>
+
+
+    <!-- Teacher Dashboard Section -->
+    <div id="teacher-dashboard" class="hidden">
+        <h2>Teacher Dashboard</h2>
+        <button onclick="showClassroom()">Classroom</button>
+        <button onclick="showTesting()">Testing</button>
+    </div>
+
+    <!-- Classroom Management Section -->
+    <div id="classroom-management" class="hidden">
+        <h2>Classroom Management</h2>
+        <button onclick="showAddStudentForm()">Add Student</button>
+        <button onclick="goBackToDashboard()">Back to Dashboard</button>
+        <div id="student-list">
+            <!-- Student list will be dynamically populated here -->
+        </div>
+    </div>
+
+    <!-- Add Student Form -->
+    <div id="add-student-form" class="hidden">
+        <h2>Add Student</h2>
+        <input type="text" id="student-name" placeholder="Student Name"><br>
+        <input type="text" id="student-id" placeholder="Student ID"><br>
+        <button onclick="submitAddStudent()">Add Student</button>
+        <button onclick="goBackToClassroom()">Back to Classroom</button>
+    </div>
+
+    <div id="view-classroom"
+
+
+
+    <!-- Main App (Letter Tracking Test) -->
+    <div id="app" class="hidden">
+        <h1>Letter Tracking Test</h1>
+
+        <!-- Section for teacher to input words -->
+        <div id="input-section">
+            <h2>Enter Words for the Test</h2>
+            <textarea id="word-input" rows="5" cols="50" placeholder="Enter words separated by commas"></textarea><br>
+            <button onclick="startTest()">Start Test</button>
+        </div>
+
+        <!-- Section to display the test -->
+        <div id="test-section" class="hidden">
+            <h2>Test</h2>
+            <div id="current-word"></div>
+            <button onclick="nextWord()">Next Word</button>
+        </div>
+
+        <!-- Section to display results -->
+        <div id="results-section" class="hidden">
+            <h2>Results</h2>
+            <div id="results"></div>
+        </div>
+    </div>
+
+    <script src="main.js"></script>
+</body>
+</html>
