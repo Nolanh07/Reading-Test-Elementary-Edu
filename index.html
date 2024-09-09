@@ -3,18 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Word Test</title>
+    <title>Reading Test</title>
     <style>
-        /* Basic reset for margin and padding */
-        body, h3, p {
-            margin: 0;
-            padding: 0;
-        }
-
-        /* General styles for the app */
+        /* General body styling */
         body {
             font-family: Arial, sans-serif;
             background-color: #f4f4f4;
+            margin: 0;
             padding: 20px;
             display: flex;
             justify-content: center;
@@ -22,153 +17,256 @@
             height: 100vh;
         }
 
-        #input-section, #test-section, #results-section {
-            margin: 20px;
+        /* Container for each section */
+        .container {
+            background-color: white;
             padding: 20px;
-            background-color: #fff;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 600px;
             text-align: center;
         }
 
-        #word-input {
-            width: 80%;
-            padding: 10px;
-            font-size: 16px;
+        /* Headings */
+        h1, h2 {
+            font-size: 24px;
+            color: #333;
             margin-bottom: 20px;
-            border: 2px solid #ccc;
-            border-radius: 4px;
         }
 
+        /* Buttons */
         button {
-            padding: 10px 20px;
-            font-size: 16px;
             background-color: #4CAF50;
             color: white;
+            padding: 10px 20px;
+            font-size: 18px;
             border: none;
             border-radius: 4px;
             cursor: pointer;
+            margin: 10px 5px;
         }
 
         button:hover {
             background-color: #45a049;
         }
 
-        /* Styles for the test section */
-        #current-word {
-            margin: 20px 0;
-            font-size: 24px;
+        /* Form styling */
+        form {
+            margin-bottom: 20px;
         }
 
+        label {
+            display: block;
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            font-size: 16px;
+            border: 2px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        /* List of students */
+        ul {
+            list-style: none;
+            padding: 0;
+            margin-top: 20px;
+        }
+
+        li {
+            background-color: #e7f4e4;
+            padding: 10px;
+            margin-bottom: 5px;
+            border-radius: 4px;
+            font-size: 18px;
+            color: #333;
+        }
+
+        /* For displaying the words */
+        #student-word-display, #teacher-word-display {
+            font-size: 36px;
+            margin: 20px 0;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background-color: #fafafa;
+        }
+
+        /* Clickable letters for teachers */
         .clickable-letter {
-            font-size: 24px;
             display: inline-block;
             padding: 10px;
+            font-size: 36px;
             margin: 5px;
-            background-color: #e0e0e0;
-            border-radius: 4px;
             cursor: pointer;
+            background-color: #f0f0f0;
+            border-radius: 4px;
             transition: background-color 0.3s ease;
         }
 
         .clickable-letter:hover {
-            background-color: #d0d0d0;
+            background-color: #dcdcdc;
         }
 
-        /* Styles for incorrect letters */
+        /* Highlighting incorrect letters */
         .incorrect {
             color: red;
             text-decoration: line-through;
         }
 
-        /* Styles for correct letters */
-        .correct {
-            color: green;
-        }
-
-        /* Hidden sections initially */
+        /* Hidden elements */
         .hidden {
             display: none;
         }
-
-        /* Results section */
-        #results {
-            text-align: left;
-        }
-
-        #results h3 {
-            margin-bottom: 10px;
-        }
-
-        #results p {
-            font-size: 20px;
-            margin-bottom: 10px;
-        }
-
-
-
     </style>
 </head>
 <body>
 
-    <!-- Start Test Button -->
-    <div id="input-section">
-        <button onclick="startTest()">Start Test</button>
+    <!-- Entry point for selecting Student or Teacher -->
+    <div id="entry-section">
+        <button onclick="startStudentTest()">I'm a Student</button>
+        <button onclick="startTeacherTest()">I'm a Teacher</button>
     </div>
 
-    <!-- Test Section where words will be displayed -->
-    <div id="test-section" class="hidden">
-        <div id="current-word"></div>
-        <button onclick="nextWord()">Next Word</button>
+    <!-- Teacher Dashboard Section -->
+    <div id="teacher-dashboard" class="hidden container">
+        <h1>Teacher Dashboard</h1>
+        <button onclick="showAddStudentSection()">Manage Students</button>
+        <button onclick="showTeacherTestSection()">Start Test</button>
     </div>
 
-    <!-- Results Section -->
-    <div id="results-section" class="hidden">
+    <!-- Add Student Section (Part of Teacher Dashboard) -->
+    <div id="add-student-section" class="hidden container">
+        <h1>Add a Student</h1>
+        <form id="studentForm">
+            <label for="studentName">Student Name:</label><br>
+            <input type="text" id="studentName" required><br>
+            <label for="studentId">Student ID:</label><br>
+            <input type="text" id="studentId" required><br>
+            <button type="submit">Add Student</button>
+        </form>
+
+        <h2>Class List</h2>
+        <ul id="studentList"></ul>
+
+        <button onclick="goBackToDashboard()">Back to Dashboard</button>
+    </div>
+
+    <!-- Teacher Test Section (Can mark incorrect letters) -->
+    <div id="teacher-section" class="hidden container">
+        <h1>Teacher Test</h1>
+        <div id="teacher-word-display"></div>
+        <button onclick="nextTeacherWord()">Next Word</button>
+    </div>
+
+    <!-- Results Section for the teacher -->
+    <div id="results-section" class="hidden container">
+        <h2>Test Results</h2>
         <div id="results"></div>
+        <button onclick="goBackToDashboard()">Back to Dashboard</button>
     </div>
 
     <script>
-        // JavaScript code to handle the predefined word test
-
-        const words = ['apple', 'banana', 'cherry', 'dog', 'elephant', 'frog', 'car', 'bike', 'train'];
+        // Predefined set of words for testing
+        const words = ['apple', 'banana', 'cherry', 'dog', 'elephant'];
         let currentWordIndex = 0;
         let currentWord = '';
         let results = {};
 
-        // Function to start the test using predefined words
-        function startTest() {
-            // Hide the input section and show the test section
-            document.getElementById('input-section').classList.add('hidden');
-            document.getElementById('test-section').classList.remove('hidden');
+        // Store students in localStorage for this demo
+        let students = JSON.parse(localStorage.getItem('students')) || [];
 
-            // Start with the first word
-            currentWordIndex = 0;
-            currentWord = words[currentWordIndex];
-            displayCurrentWord();
+        // Function to start the teacher's dashboard
+        function startTeacherTest() {
+            document.getElementById('entry-section').classList.add('hidden');
+            document.getElementById('teacher-dashboard').classList.remove('hidden');
         }
 
-        // Function to display the current word
-        function displayCurrentWord() {
-            const currentWordDiv = document.getElementById('current-word');
-            currentWordDiv.innerHTML = ''; // Clear previous word
+        // Function to show the Add Student section
+        function showAddStudentSection() {
+            document.getElementById('teacher-dashboard').classList.add('hidden');
+            document.getElementById('add-student-section').classList.remove('hidden');
+            loadStudents(); // Display the list of students
+        }
 
-            // Create a clickable letter span for each letter in the word
+        // Function to go back to teacher's dashboard from Add Student section
+        function goBackToDashboard() {
+            document.getElementById('add-student-section').classList.add('hidden');
+            document.getElementById('teacher-section').classList.add('hidden');
+            document.getElementById('results-section').classList.add('hidden');
+            document.getElementById('teacher-dashboard').classList.remove('hidden');
+        }
+
+        // Handle form submission to add a student
+        document.getElementById('studentForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const studentName = document.getElementById('studentName').value;
+            const studentId = document.getElementById('studentId').value;
+
+            // Add student to local storage
+            students.push({ name: studentName, studentId: studentId });
+            localStorage.setItem('students', JSON.stringify(students));
+
+            // Clear the form
+            document.getElementById('studentForm').reset();
+
+            // Refresh student list
+            loadStudents();
+        });
+
+        // Load students and display in the list
+        function loadStudents() {
+            const studentList = document.getElementById('studentList');
+            studentList.innerHTML = '';
+
+            students.forEach(student => {
+                const listItem = document.createElement('li');
+                listItem.textContent = `${student.name} (ID: ${student.studentId})`;
+                studentList.appendChild(listItem);
+            });
+        }
+
+        // Teacher test section (can mark letters)
+        function showTeacherTestSection() {
+            document.getElementById('teacher-dashboard').classList.add('hidden');
+            document.getElementById('teacher-section').classList.remove('hidden');
+
+            // Initialize first word
+            currentWordIndex = 0;
+            currentWord = words[currentWordIndex];
+            displayTeacherWord();
+        }
+
+        // Display word for teacher and make letters clickable
+        function displayTeacherWord() {
+            const teacherWordDiv = document.getElementById('teacher-word-display');
+            teacherWordDiv.innerHTML = ''; // Clear previous word
+
+            // Create clickable spans for each letter
             for (let i = 0; i < currentWord.length; i++) {
                 const letterSpan = document.createElement('span');
                 letterSpan.textContent = currentWord[i];
                 letterSpan.classList.add('clickable-letter');
                 letterSpan.onclick = () => markIncorrect(letterSpan, i);
-                currentWordDiv.appendChild(letterSpan);
+                teacherWordDiv.appendChild(letterSpan);
             }
         }
 
-        // Function to mark letters as incorrect
+        // Mark a letter as incorrect/correct
         function markIncorrect(letterSpan, index) {
+            // Store results
             if (!results[currentWord]) {
                 results[currentWord] = Array(currentWord.length).fill(false);
             }
 
-            // Toggle the incorrect status of the letter
+            // Toggle incorrect status
             if (results[currentWord][index]) {
                 results[currentWord][index] = false;
                 letterSpan.classList.remove('incorrect');
@@ -178,28 +276,97 @@
             }
         }
 
-        // Function to proceed to the next word
-        function nextWord() {
+
+
+        // Function to start the student test 
+        
+        function startStudentTest() {
+            document.getElementById('entry-section').classList.add('hidden');
+
+            // Create a new UI for students to see the word
+            const studentContainer = document.createElement('div');
+            studentContainer.classList.add('container');
+            studentContainer.id = 'student-test-container';
+
+            const instruction = document.createElement('h1');
+            instruction.textContent = "Look at the word below:";
+
+            const wordDisplay = document.createElement('div');
+            wordDisplay.id = 'student-word-display';
+
+            const nextButton = document.createElement('button');
+            nextButton.textContent = 'Next';
+            nextButton.id = 'nextButton';
+            nextButton.onclick = nextStudentWord;
+
+            studentContainer.appendChild(instruction);
+            studentContainer.appendChild(wordDisplay);
+            studentContainer.appendChild(nextButton);
+
+            document.body.appendChild(studentContainer);
+
+            // Show the first word to the student
+            currentWordIndex = 0;
+            currentWord = words[currentWordIndex];
+            displayStudentWord();
+        }
+
+        // Display the current word for the student (no interaction)
+        function displayStudentWord() {
+            document.getElementById('student-word-display').textContent = currentWord;
+        }
+
+        // Move to the next word or end the test if no more words are left
+        function nextStudentWord() {
             if (currentWordIndex < words.length - 1) {
                 currentWordIndex++;
                 currentWord = words[currentWordIndex];
-                displayCurrentWord();
+                displayStudentWord();
             } else {
-                endTest();
+                endStudentTest();
             }
         }
 
-        // Function to end the test and display results
-        function endTest() {
-            document.getElementById('test-section').classList.add('hidden');
+        // End the student's test and change button behavior to go back to home
+        function endStudentTest() {
+            const wordDisplay = document.getElementById('student-word-display');
+            wordDisplay.textContent = "Test completed!";
+
+            // Change the button to "Home" and make it return to the home screen
+            const nextButton = document.getElementById('nextButton');
+            nextButton.textContent = "Home";
+            nextButton.onclick = goToHomeScreen;
+        }
+
+        // Function to return to the home screen
+        function goToHomeScreen() {
+            document.getElementById('student-test-container').remove(); // Remove the test UI
+            document.getElementById('entry-section').classList.remove('hidden'); // Show the entry section again
+        }
+
+
+        // Move to the next word in the test
+        function nextTeacherWord() {
+            if (currentWordIndex < words.length - 1) {
+                currentWordIndex++;
+                currentWord = words[currentWordIndex];
+                displayTeacherWord();
+            } else {
+                endTeacherTest();
+            }
+        }
+
+        // End the test and show results
+        function endTeacherTest() {
+            document.getElementById('teacher-section').classList.add('hidden');
             document.getElementById('results-section').classList.remove('hidden');
 
             let resultsDiv = document.getElementById('results');
             resultsDiv.innerHTML = '<h3>Summary of Results:</h3>';
 
+            // Display results for each word
             for (let word in results) {
                 let formattedWord = '';
-
                 for (let i = 0; i < word.length; i++) {
                     if (results[word][i]) {
                         formattedWord += `<span class="incorrect">${word[i]}</span>`;
@@ -211,113 +378,12 @@
                 resultsDiv.innerHTML += `<p>${formattedWord}</p>`;
             }
         }
+
+        // Load students when the page is loaded
+        loadStudents();
+
+       
     </script>
 
 </body>
 </html>
-
-
-
-
-<style>
-    /* Basic reset for margin and padding */
-    body, h3, p {
-        margin: 0;
-        padding: 0;
-    }
-
-    /* General styles for the app */
-    body {
-        font-family: Arial, sans-serif;
-        background-color: #f4f4f4;
-        padding: 20px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-    }
-
-    #input-section, #test-section, #results-section {
-        margin: 20px;
-        padding: 20px;
-        background-color: #fff;
-        border-radius: 8px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        text-align: center;
-    }
-
-    #word-input {
-        width: 80%;
-        padding: 10px;
-        font-size: 16px;
-        margin-bottom: 20px;
-        border: 2px solid #ccc;
-        border-radius: 4px;
-    }
-
-    button {
-        padding: 10px 20px;
-        font-size: 16px;
-        background-color: #4CAF50;
-        color: white;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-    }
-
-    button:hover {
-        background-color: #45a049;
-    }
-
-    /* Styles for the test section */
-    #current-word {
-        margin: 20px 0;
-        font-size: 24px;
-    }
-
-    .clickable-letter {
-        font-size: 24px;
-        display: inline-block;
-        padding: 10px;
-        margin: 5px;
-        background-color: #e0e0e0;
-        border-radius: 4px;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-    }
-
-    .clickable-letter:hover {
-        background-color: #d0d0d0;
-    }
-
-    /* Styles for incorrect letters */
-    .incorrect {
-        color: red;
-        text-decoration: line-through;
-    }
-
-    /* Styles for correct letters */
-    .correct {
-        color: green;
-    }
-
-    /* Hidden sections initially */
-    .hidden {
-        display: none;
-    }
-
-    /* Results section */
-    #results {
-        text-align: left;
-    }
-
-    #results h3 {
-        margin-bottom: 10px;
-    }
-
-    #results p {
-        font-size: 20px;
-        margin-bottom: 10px;
-    }
-
-</style>
