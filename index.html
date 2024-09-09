@@ -1,114 +1,323 @@
-<link rel="stylesheet" href="style.css">
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Letter Tracking Test</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Word Test</title>
+    <style>
+        /* Basic reset for margin and padding */
+        body, h3, p {
+            margin: 0;
+            padding: 0;
+        }
+
+        /* General styles for the app */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        #input-section, #test-section, #results-section {
+            margin: 20px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        #word-input {
+            width: 80%;
+            padding: 10px;
+            font-size: 16px;
+            margin-bottom: 20px;
+            border: 2px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        /* Styles for the test section */
+        #current-word {
+            margin: 20px 0;
+            font-size: 24px;
+        }
+
+        .clickable-letter {
+            font-size: 24px;
+            display: inline-block;
+            padding: 10px;
+            margin: 5px;
+            background-color: #e0e0e0;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .clickable-letter:hover {
+            background-color: #d0d0d0;
+        }
+
+        /* Styles for incorrect letters */
+        .incorrect {
+            color: red;
+            text-decoration: line-through;
+        }
+
+        /* Styles for correct letters */
+        .correct {
+            color: green;
+        }
+
+        /* Hidden sections initially */
+        .hidden {
+            display: none;
+        }
+
+        /* Results section */
+        #results {
+            text-align: left;
+        }
+
+        #results h3 {
+            margin-bottom: 10px;
+        }
+
+        #results p {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+
+
+
+    </style>
 </head>
 <body>
-    <div id="home-screen">
-        <h1>Welcome to the Letter Tracking Test</h1>
-        <button onclick="showStudentLogin()">Students</button>
-        <button onclick="showTeacherOptions()">Teachers</button>
+
+    <!-- Start Test Button -->
+    <div id="input-section">
+        <button onclick="startTest()">Start Test</button>
     </div>
 
-    <!-- Student Login Section -->
-    <div id="student-login-section" class="hidden">
-        <h2>Student Login</h2>
-        <input type="text" id="student-username" placeholder="Username"><br>
-        <input type="password" id="student-password" placeholder="Password"><br>
-        <input type="text" id="classroom-code" placeholder="Classroom Code"><br>
-        <button onclick="submitStudentLogin()">Login</button>
-        <button onclick="goBack()">Back</button>
+    <!-- Test Section where words will be displayed -->
+    <div id="test-section" class="hidden">
+        <div id="current-word"></div>
+        <button onclick="nextWord()">Next Word</button>
     </div>
 
-    <!-- Teacher Options Section -->
-    <div id="teacher-options-section" class="hidden">
-        <h2>Teacher Options</h2>
-        <button onclick="showTeacherSignUp()">Sign Up</button>
-        <button onclick="showTeacherLogin()">Login</button>
-        <button onclick="goBack()">Back</button>
+    <!-- Results Section -->
+    <div id="results-section" class="hidden">
+        <div id="results"></div>
     </div>
 
-    <!-- Teacher Sign Up Section -->
-    <div id="teacher-signup-section" class="hidden">
-        <h2>Teacher Sign Up</h2>
-        <input type="text" id="teacher-username" placeholder="Username"><br>
-        <input type="password" id="teacher-password" placeholder="Password"><br>
-        <input type="text" id="school-name" placeholder="School Name"><br>
-        <input type="text" id="school-district" placeholder="School District"><br>
-        <button onclick="submitTeacherSignUp()">Sign Up</button>
-        <button onclick="goBack()">Back</button>
-    </div>
+    <script>
+        // JavaScript code to handle the predefined word test
 
-    
-    <!-- Teacher Login Section -->
-    <div id="teacher-login-section" class="hidden">
-        <h2>Teacher Login</h2>
-        <input type="text" id="teacher-login-username" placeholder="Username"><br>
-        <input type="password" id="teacher-login-password" placeholder="Password"><br>
-        <button onclick="submitTeacherLogin()">Login</button>
-        <button onclick="goBack()">Back</button>
-    </div>
+        const words = ['apple', 'banana', 'cherry', 'dog', 'elephant', 'frog', 'car', 'bike', 'train'];
+        let currentWordIndex = 0;
+        let currentWord = '';
+        let results = {};
 
+        // Function to start the test using predefined words
+        function startTest() {
+            // Hide the input section and show the test section
+            document.getElementById('input-section').classList.add('hidden');
+            document.getElementById('test-section').classList.remove('hidden');
 
-    <!-- Teacher Dashboard Section -->
-    <div id="teacher-dashboard" class="hidden">
-        <h2>Teacher Dashboard</h2>
-        <button onclick="showClassroom()">Classroom</button>
-        <button onclick="showTesting()">Testing</button>
-    </div>
+            // Start with the first word
+            currentWordIndex = 0;
+            currentWord = words[currentWordIndex];
+            displayCurrentWord();
+        }
 
-    <!-- Classroom Management Section -->
-    <div id="classroom-management" class="hidden">
-        <h2>Classroom Management</h2>
-        <button onclick="showAddStudentForm()">Add Student</button>
-        <button onclick="goBackToDashboard()">Back to Dashboard</button>
-        <div id="student-list">
-            <!-- Student list will be dynamically populated here -->
-        </div>
-    </div>
+        // Function to display the current word
+        function displayCurrentWord() {
+            const currentWordDiv = document.getElementById('current-word');
+            currentWordDiv.innerHTML = ''; // Clear previous word
 
-    <!-- Add Student Form -->
-    <div id="add-student-form" class="hidden">
-        <h2>Add Student</h2>
-        <input type="text" id="student-name" placeholder="Student Name"><br>
-        <input type="text" id="student-id" placeholder="Student ID"><br>
-        <button onclick="submitAddStudent()">Add Student</button>
-        <button onclick="goBackToClassroom()">Back to Classroom</button>
-    </div>
+            // Create a clickable letter span for each letter in the word
+            for (let i = 0; i < currentWord.length; i++) {
+                const letterSpan = document.createElement('span');
+                letterSpan.textContent = currentWord[i];
+                letterSpan.classList.add('clickable-letter');
+                letterSpan.onclick = () => markIncorrect(letterSpan, i);
+                currentWordDiv.appendChild(letterSpan);
+            }
+        }
 
-    <div id="view-classroom"
+        // Function to mark letters as incorrect
+        function markIncorrect(letterSpan, index) {
+            if (!results[currentWord]) {
+                results[currentWord] = Array(currentWord.length).fill(false);
+            }
 
+            // Toggle the incorrect status of the letter
+            if (results[currentWord][index]) {
+                results[currentWord][index] = false;
+                letterSpan.classList.remove('incorrect');
+            } else {
+                results[currentWord][index] = true;
+                letterSpan.classList.add('incorrect');
+            }
+        }
 
+        // Function to proceed to the next word
+        function nextWord() {
+            if (currentWordIndex < words.length - 1) {
+                currentWordIndex++;
+                currentWord = words[currentWordIndex];
+                displayCurrentWord();
+            } else {
+                endTest();
+            }
+        }
 
-    <!-- Main App (Letter Tracking Test) -->
-    <div id="app" class="hidden">
-        <h1>Letter Tracking Test</h1>
+        // Function to end the test and display results
+        function endTest() {
+            document.getElementById('test-section').classList.add('hidden');
+            document.getElementById('results-section').classList.remove('hidden');
 
-        <!-- Section for teacher to input words -->
-        <div id="input-section">
-            <h2>Enter Words for the Test</h2>
-            <textarea id="word-input" rows="5" cols="50" placeholder="Enter words separated by commas"></textarea><br>
-            <button onclick="startTest()">Start Test</button>
-        </div>
+            let resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = '<h3>Summary of Results:</h3>';
 
-        <!-- Section to display the test -->
-        <div id="test-section" class="hidden">
-            <h2>Test</h2>
-            <div id="current-word"></div>
-            <button onclick="nextWord()">Next Word</button>
-        </div>
+            for (let word in results) {
+                let formattedWord = '';
 
-        <!-- Section to display results -->
-        <div id="results-section" class="hidden">
-            <h2>Results</h2>
-            <div id="results"></div>
-        </div>
-    </div>
+                for (let i = 0; i < word.length; i++) {
+                    if (results[word][i]) {
+                        formattedWord += `<span class="incorrect">${word[i]}</span>`;
+                    } else {
+                        formattedWord += `<span class="correct">${word[i]}</span>`;
+                    }
+                }
 
-    <script src="main.js"></script>
+                resultsDiv.innerHTML += `<p>${formattedWord}</p>`;
+            }
+        }
+    </script>
+
 </body>
 </html>
+
+
+
+
+<style>
+    /* Basic reset for margin and padding */
+    body, h3, p {
+        margin: 0;
+        padding: 0;
+    }
+
+    /* General styles for the app */
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        padding: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+
+    #input-section, #test-section, #results-section {
+        margin: 20px;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
+
+    #word-input {
+        width: 80%;
+        padding: 10px;
+        font-size: 16px;
+        margin-bottom: 20px;
+        border: 2px solid #ccc;
+        border-radius: 4px;
+    }
+
+    button {
+        padding: 10px 20px;
+        font-size: 16px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background-color: #45a049;
+    }
+
+    /* Styles for the test section */
+    #current-word {
+        margin: 20px 0;
+        font-size: 24px;
+    }
+
+    .clickable-letter {
+        font-size: 24px;
+        display: inline-block;
+        padding: 10px;
+        margin: 5px;
+        background-color: #e0e0e0;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .clickable-letter:hover {
+        background-color: #d0d0d0;
+    }
+
+    /* Styles for incorrect letters */
+    .incorrect {
+        color: red;
+        text-decoration: line-through;
+    }
+
+    /* Styles for correct letters */
+    .correct {
+        color: green;
+    }
+
+    /* Hidden sections initially */
+    .hidden {
+        display: none;
+    }
+
+    /* Results section */
+    #results {
+        text-align: left;
+    }
+
+    #results h3 {
+        margin-bottom: 10px;
+    }
+
+    #results p {
+        font-size: 20px;
+        margin-bottom: 10px;
+    }
+
+</style>
