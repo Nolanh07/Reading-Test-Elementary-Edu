@@ -1,7 +1,5 @@
-This is a test to assist elementary school teachers in assessing the 
-skills of early elementary school kids. The test employs a login feature
-so teachers can establish their classroom, store the test results and 
-easily access them. The back end code was written using JavaScript and the 
-user interferface was created using HTML and CSS. The test gives the kids 
-several different words in groups pre determined by the teachers to test 
-different criteria such as .....  
+This project is designed to assist elementary school teachers in evaluating the skills of young students through an interactive, user-friendly testing system. The test allows teachers to set up their classrooms, manage student data, and store test results for easy retrieval and assessment. Using a secure login feature, teachers can create customized test groups, ensuring flexibility in tailoring tests to individual classroom needs.
+
+The system was developed with JavaScript handling the backend logic, while HTML and CSS were used to create a visually appealing and intuitive user interface. Teachers can pre-determine the criteria for evaluation, such as reading comprehension, vocabulary, and spelling, by selecting different word groups for the students. These assessments provide teachers with valuable insights into the students’ progress and help identify areas where further support may be needed.
+
+The platform streamlines the process of tracking and assessing early elementary school skills, making it easier for educators to monitor student performance over time.
